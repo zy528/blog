@@ -1,0 +1,17 @@
+sudo: false
+language: go
+git:
+    depth: 1
+install: go get -v github.com/gohugoio/hugo
+script: hugo
+deploy:
+    provider: pages
+    skip_cleanup: true
+    github_token: $token
+    on:
+        branch: hugo
+    local_dir: public
+    repo: zy528/blog
+    target_branch: master
+    email: 379435696.com
+    name: zy
