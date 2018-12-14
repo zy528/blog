@@ -1,6 +1,6 @@
 baseURL = "https://zy528.github.io/blog/"
 languageCode = "en-us"
-title = "Hugo Hermit"
+title = "ZY的小黑屋"
 theme = "hermit"
 # enableGitInfo = true
 pygmentsCodefences  = true
@@ -13,7 +13,7 @@ enableEmoji = true  # Shorthand emojis in content files - https://gohugo.io/func
 # disqusShortname = "yourdiscussshortname"
 
 [author]
-  name = "John Doe"
+  name = "Zy"
 
 [blackfriday]
   hrefTargetBlank = true
@@ -47,7 +47,7 @@ enableEmoji = true  # Shorthand emojis in content files - https://gohugo.io/func
 
   [[params.social]]
     name = "github"
-    url = "https://github.com/"
+    url = "https://github.com/zy528"
 
 [menu]
 
