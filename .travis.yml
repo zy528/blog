@@ -13,5 +13,6 @@ deploy:
     local_dir: public
     repo: zy528/blog
     target_branch: master
+    fqdn: zymagic.top
     email: 379435696.com
     name: zy
