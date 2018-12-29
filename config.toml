@@ -41,9 +41,9 @@ enableEmoji = true  # Shorthand emojis in content files - https://gohugo.io/func
   #  name = "twitter"
   #  url = "https://twitter.com/"
 
-  #[[params.social]]
-  #  name = "instagram"
-  #  url = "https://instagram.com/"
+  [[params.social]]
+    name = "email"
+    url = "mailto:yuzou528@qq.com"
 
   [[params.social]]
     name = "github"
