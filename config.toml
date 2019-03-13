@@ -27,6 +27,10 @@ enableEmoji = true  # Shorthand emojis in content files - https://gohugo.io/func
   dateformShort   = "Jan 2"
   dateformNum     = "2006-01-02"
   dateformNumTime = "2006-01-02 15:04 -0700"
+  
+  # busuanzi
+  busuanzi = true
+  busuanzi_site_offset = 0
 
   # themeColor = "#494f5c"  # Theme color in meta tags.
   homeSubtitle = "To Be A Better Man"
