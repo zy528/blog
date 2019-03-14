@@ -1,6 +1,16 @@
+{{ define "head" }}
+	{{ if .Site.Params.bgImg -}}
+	<style>.bg-img {background-image: url('{{.Site.Params.bgImg | absURL}}');}</style>
+	{{- else if .Site.Params.images -}}
+		{{- range first 1 .Site.Params.images -}}
+		<style>.bg-img {background-image: url('{{. | absURL}}');}</style>
+		{{- end -}}
+	{{- end -}}
+{{ end }}
+
 {{ define "main" }}
-	{{- with .Site.Params.bgImg }}
-	<div class="bg-img" style="background-image: url('{{ . }}')"></div>
+	{{- if (or .Site.Params.images .Site.Params.bgImg) }}
+	<div class="bg-img"></div>
 	{{- end }}
 	<div id="spotlight" class="animated fadeIn">
 		<div id="home-center">
@@ -15,7 +25,7 @@
 			{{- end }}
 			<nav id="home-nav" class="site-nav">
 				{{- range .Site.Menus.main }}
-				<a href="{{ .URL }}">{{ .Name }}</a>
+				<a href="{{ .URL | absLangURL }}">{{ .Name }}</a>
 				{{- end }}
 			</nav>
 		</div>
@@ -34,8 +44,4 @@
         </p>
 		</div>
 	</div>
-{{ end }}
-
-{{ define "footer" }}
-	<script>let haveHeader = false;</script>
 {{ end }}

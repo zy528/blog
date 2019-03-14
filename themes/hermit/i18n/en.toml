@@ -17,8 +17,19 @@ other = "Archives"
 [wordCount]
 other = "{{ .WordCount }} Words"
 
+[tableOfContents]
+other = "Table of Contents"
+
 [newer]
 other = "Newer"
 
 [older]
 other = "Older"
+
+# partials/header.html
+#
+[menu]
+other = "Menu"
+
+[featuredImage]
+other = "Featured Image"

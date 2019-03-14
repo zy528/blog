@@ -1,16 +1,29 @@
+{{ define "head" }}
+	{{ if .Params.featuredImg -}}
+	<style>.bg-img {background-image: url('{{.Params.featuredImg | absURL}}');}</style>
+	{{- else if .Params.images -}}
+		{{- range first 1 .Params.images -}}
+		<style>.bg-img {background-image: url('{{. | absURL}}');}</style>
+		{{- end -}}
+	{{- end -}}
+{{ end }}
+
 {{ define "header" }}
-{{ partialCached "header.html" . }}
+{{ partial "header.html" . }}
 {{ end }}
 
 {{ define "main" }}
+	{{- if (or .Params.images .Params.featuredImg) }}
+	<div class="bg-img"></div>
+	{{- end }}
 	<main class="site-main section-inner thin animated fadeIn faster">
 		<h1>{{ .Title }}</h1>
 		<div class="content">
 			{{ .Content }}
 		</div>
-		{{- if and .Params.comments .Site.DisqusShortname }}
-		<div id="disqus" class="thin">
-			{{ template "_internal/disqus.html" . }}
+		{{- if .Params.comments }}
+		<div id="comments" class="thin">
+			{{ partial "comments.html" . }}
 		</div>
 		{{- end }}
 	</main>
@@ -18,5 +31,4 @@
 
 {{ define "footer" }}
 {{ partialCached "footer.html" . }}
-	<script>let haveHeader = true;</script>
 {{ end }}
