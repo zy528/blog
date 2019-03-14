@@ -22,6 +22,11 @@
 	{{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "css/style.css" . | toCSS | minify | fingerprint -}}
 	<link rel="stylesheet" href="{{ $style.RelPermalink }}" {{ printf "integrity=%q" $style.Data.Integrity | safeHTMLAttr }}>
 	{{ block "head" . -}}{{- end }}
+	
+	{{ if isset .Site.Params "busuanzi" }}
+	<!-- 不蒜子 -->
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	{{ end }}
 </head>
 
 <body id="page">
