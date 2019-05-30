@@ -15,7 +15,7 @@ tags:
 ##### 步骤
 1.clone kettle源码保留以下文件即可：
 
-- ![1546075627948](https://raw.githubusercontent.com/zy528/blog/hugo/static/images/kettle_debug/1.png)
+![1](https://raw.githubusercontent.com/zy528/blog/hugo/static/images/kettle_debug/1.png)
 
 - kettle的源码结构
 - kettle-core：kettle的核心模块，包括一些数据处理等。
@@ -29,7 +29,7 @@ tags:
 
 2.目录下的所有文件复制到源码ui文件目录下：
 
-![1546075627948](https://raw.githubusercontent.com/zy528/blog/hugo/static/images/kettle_debug/2.png)
+![2](https://raw.githubusercontent.com/zy528/blog/hugo/static/images/kettle_debug/2.png)
 
 3.因为我是在windows环境下调试的，所以要修改```ui/pom.xml```
 里面的依赖，之前是linux的依赖修改为以下代码：
@@ -42,7 +42,7 @@ tags:
 ```
 
 4.运行```ui\src\main\java\org\pentaho\di\ui\spoon ```目录下的```Spoon.java```出现kettle可操作的界面即调试启动成功
-![1546075627948](https://raw.githubusercontent.com/zy528/blog/hugo/static/images/kettle_debug/3.png)
+![3](https://raw.githubusercontent.com/zy528/blog/hugo/static/images/kettle_debug/3.png)
 
 5.之前在调试的时候遇到一个很坑的问题,启动页面都能显示，但操作界面就是不出来，控制台报错：```
 java.lang.OutOfMemoryError: Java heap space kettle```
@@ -52,6 +52,3 @@ java.lang.OutOfMemoryError: Java heap space kettle```
 ### 总结
 调试kettle是为了进行转换的插件开发，接下来会介绍kettle准换插件的开发流程。
 kettle的相关知识可以参考https://blog.csdn.net/inthat/article/details/84867066#_408
-
-
-
