@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>数据仓库 on ZY的小黑屋</title>
+    <link>https://zymagic.top/tags/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/</link>
+    <description>Recent content in 数据仓库 on ZY的小黑屋</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Mon, 04 Mar 2019 15:00:01 +0800</lastBuildDate>
+    
+	<atom:link href="https://zymagic.top/tags/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>OLTP和OLAP</title>
+      <link>https://zymagic.top/posts/oltp%E5%92%8Colap/</link>
+      <pubDate>Mon, 04 Mar 2019 15:00:01 +0800</pubDate>
+      
+      <guid>https://zymagic.top/posts/oltp%E5%92%8Colap/</guid>
+      <description>OLTP On-Line Transaction Processing联机事务处理系统(OLTP) 也称为面向交易的处理系统，其基本特征是顾客的原始数据可以立即传送到计算中心进行处理，并</description>
+    </item>
+    
+  </channel>
+</rss>

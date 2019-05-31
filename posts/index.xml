@@ -1,0 +1,451 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Posts on ZY的小黑屋</title>
+		<link>https://zymagic.top/posts/</link>
+		<description>Recent content in Posts on ZY的小黑屋</description>
+		<generator>Hugo -- gohugo.io</generator>
+		<language>en-us</language>
+		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+		<lastBuildDate>Thu, 30 May 2019 17:46:01 +0800</lastBuildDate>
+		<atom:link href="https://zymagic.top/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Kettle源码调试</title>
+			<link>https://zymagic.top/posts/kettle%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95/</link>
+			<pubDate>Thu, 30 May 2019 17:46:01 +0800</pubDate>
+			
+			<guid>https://zymagic.top/posts/kettle%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95/</guid>
+			<description>Kettle源码调试 继上次基于kettle源码编译Kettle之后,因为要开发kettle插件,所以尝试了下kettle源码的调试。 调试步骤</description>
+			<content type="html"><![CDATA[
+
+<h2 id="kettle源码调试">Kettle源码调试</h2>
+
+<p>继上次基于kettle源码编译Kettle之后,因为要开发kettle插件,所以尝试了下kettle源码的调试。</p>
+
+<h3 id="调试步骤">调试步骤</h3>
+
+<h5 id="调试环境">调试环境</h5>
+
+<ul>
+<li>我使用的还是idea</li>
+
+<li><p>kettle源码版本9.0</p>
+
+<h5 id="步骤">步骤</h5>
+
+<p>1.clone kettle源码保留以下文件即可：</p></li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/zy528/blog/hugo/static/images/kettle_debug/1.png" alt="1" /></p>
+
+<ul>
+<li>kettle的源码结构</li>
+<li>kettle-core：kettle的核心模块，包括一些数据处理等。</li>
+<li>kettle-dbdialog：kettle数据库连接界面逻辑。</li>
+<li>kettle-engine：kettle的引擎，负责执行kettle的具体作业和转换的逻辑，并会调用core模块。</li>
+<li>kettle-ui：用户界面模块，包括用户界面显示的xul文件，通过后端代码编写的Dialog以及国际化等。</li>
+</ul>
+
+<p>根目录下的pom.xml 的modules对应进行修改只保留core、dbdialog、engine、ui</p>
+
+<p>将编译好的kettle <code>data-integration\ui</code></p>
+
+<p>2.目录下的所有文件复制到源码ui文件目录下：</p>
+
+<p><img src="https://raw.githubusercontent.com/zy528/blog/hugo/static/images/kettle_debug/2.png" alt="2" /></p>
+
+<p>3.因为我是在windows环境下调试的，所以要修改<code>ui/pom.xml</code>
+里面的依赖，之前是linux的依赖修改为以下代码：</p>
+
+<pre><code>&lt;dependency&gt;
+      &lt;groupId&gt;org.eclipse.swt&lt;/groupId&gt;
+      &lt;artifactId&gt;org.eclipse.swt.win32.win32.x86_64&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>4.运行<code>ui\src\main\java\org\pentaho\di\ui\spoon</code>目录下的<code>Spoon.java</code>出现kettle可操作的界面即调试启动成功
+<img src="https://raw.githubusercontent.com/zy528/blog/hugo/static/images/kettle_debug/3.png" alt="3" /></p>
+
+<p>5.之前在调试的时候遇到一个很坑的问题,启动页面都能显示，但操作界面就是不出来，控制台报错：<code>
+java.lang.OutOfMemoryError: Java heap space kettle</code>
+不管我怎么调运行内存都没用，后来打断点调试，发现是在加载
+<code>db.cache-Unknown</code>配置文件的时候内存溢出，于是清理了<code>C:\Users\Administrator\.kettle</code>目录下的文件，就可以正常启动了。</p>
+
+<h3 id="总结">总结</h3>
+
+<p>调试kettle是为了进行转换的插件开发，接下来会介绍kettle准换插件的开发流程。
+kettle的相关知识可以参考<a href="https://blog.csdn.net/inthat/article/details/84867066#_408" target="_blank">https://blog.csdn.net/inthat/article/details/84867066#_408</a></p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Oracle、PostGreSql多表关联更新</title>
+			<link>https://zymagic.top/posts/oraclepostgresql%E5%A4%9A%E8%A1%A8%E5%85%B3%E8%81%94%E6%9B%B4%E6%96%B0/</link>
+			<pubDate>Thu, 30 May 2019 16:32:01 +0800</pubDate>
+			
+			<guid>https://zymagic.top/posts/oraclepostgresql%E5%A4%9A%E8%A1%A8%E5%85%B3%E8%81%94%E6%9B%B4%E6%96%B0/</guid>
+			<description>Oracle、PostGreSql多表关联更新 oracle 方法1: UPDATE 表2 SET 表2.C = (SELECT B FROM 表1 WHERE 表1.A = 表2.A) WHERE EXISTS ( SELECT 1 FROM 表1 WHERE 表1.A = 表2.</description>
+			<content type="html"><![CDATA[
+
+<h2 id="oracle-postgresql多表关联更新">Oracle、PostGreSql多表关联更新</h2>
+
+<h5 id="oracle">oracle</h5>
+
+<p>方法1:</p>
+
+<pre><code>UPDATE  表2
+SET
+  表2.C  =  (SELECT  B  FROM  表1  WHERE   表1.A = 表2.A)
+WHERE
+  EXISTS ( SELECT 1 FROM   表1  WHERE   表1.A = 表2.A)
+</code></pre>
+
+<p>方法2:</p>
+
+<pre><code>MERGE INTO 表2 
+USING 表1
+ON ( 表2.A = 表1.A )    -- 条件是 A 相同
+WHEN MATCHED THEN UPDATE SET 表2.C = 表1.B   -- 匹配的时候，更新
+</code></pre>
+
+<h5 id="postgresql">PostGreSql</h5>
+
+<pre><code>update a
+set a.xx = b.xx 
+from b 
+where a.id = b.id
+</code></pre>
+]]></content>
+		</item>
+		
+		<item>
+			<title>OLTP和OLAP</title>
+			<link>https://zymagic.top/posts/oltp%E5%92%8Colap/</link>
+			<pubDate>Mon, 04 Mar 2019 15:00:01 +0800</pubDate>
+			
+			<guid>https://zymagic.top/posts/oltp%E5%92%8Colap/</guid>
+			<description>OLTP On-Line Transaction Processing联机事务处理系统(OLTP) 也称为面向交易的处理系统，其基本特征是顾客的原始数据可以立即传送到计算中心进行处理，并</description>
+			<content type="html"><![CDATA[
+
+<h2 id="oltp">OLTP</h2>
+
+<p>On-Line Transaction Processing<a href="http://baike.baidu.com/view/8028.htm" target="_blank">联机事务处理</a>系统(OLTP)</p>
+
+<p>也称为面向交易的处理系统，其基本特征是顾客的<a href="http://baike.baidu.com/view/3364695.htm" target="_blank">原始数据</a>可以立即传送到<a href="http://baike.baidu.com/view/907824.htm" target="_blank">计算中心</a>进行处理，并在很短的时间内给出处理结果。</p>
+
+<h4 id="特征">特征</h4>
+
+<p>支持大量并发用户定期添加和修改数据。</p>
+
+<p>反映随时变化的单位状态，但不保存其历史记录。</p>
+
+<p>包含大量数据，其中包括用于验证事务的大量数据。</p>
+
+<p>具有复杂的结构。</p>
+
+<p>可以进行优化以对<a href="http://baike.baidu.com/view/121511.htm" target="_blank">事务</a>活动做出响应。</p>
+
+<p>提供用于支持单位日常运营的技术基础结构。</p>
+
+<p>个别<a href="http://baike.baidu.com/view/121511.htm" target="_blank">事务</a>能够很快地完成，并且只需访问相对较少的数据。OLTP 系统旨在处理同时输入的成百上千的<a href="http://baike.baidu.com/view/121511.htm" target="_blank">事务</a>。</p>
+
+<p>实时性要求高。</p>
+
+<p>数据量不是很大。</p>
+
+<p>交易一般是确定的，所以OLTP是对确定性的数据进行存取。(比如存取款都有一个特定的金额)</p>
+
+<p>并发性要求高并且严格的要求事务的完整、安全性。(比如这种情况：有可能你和你的家人同时在不同的银行取同一个帐号的款)。</p>
+
+<h2 id="olap">OLAP</h2>
+
+<p>联机分析处理 (OLAP) 的概念最早是由关系数据库之父E.F.Codd于1993年提出的，他同时提出了关于OLAP的12条准则。OLAP的提出引起了很大的反响，OLAP作为一类产品同联机事务处理(OLTP) 明显区分开来。</p>
+
+<p>下表列出了OLTP与OLAP之间的比较。</p>
+
+<p>OLAP是使分析人员、管理人员或执行人员能够从多角度对信息进行快速、一致、交互地存取,从而获得对数据的更深入了解的一类软件技术。OLAP的目标是满足决策支持或者满足在多维环境下特定的查询和报表需求,它的技术核心是&rdquo;维&rdquo;这个概念。</p>
+
+<p>“维”是人们观察客观世界的角度,是一种高层次的类型划分。“维”一般包含着层次关系,这种层次关系有时会相当复杂。通过把一个实体的多项重要的属性定义为多个维(dimension)，使用户能对不同维上的数据进行比较。因此OLAP也可以说是多维数据分析工具的集合。</p>
+
+<p>OLAP的基本多维分析操作有钻取（roll up和drill down）、切片（slice）和切块（dice）、以及旋转（pivot）、drill across、drill through等。</p>
+
+<p>钻取是改变维的层次，变换分析的粒度。它包括向上钻取（roll up）和向下钻取（drill down）。roll up是在某一维上将低层次的细节数据概括到高层次的汇总数据，或者减少维数；而drill down则相反，它从汇总数据深入到细节数据进行观察或增加新维。</p>
+
+<p>切片和切块是在一部分维上选定值后，关心度量数据在剩余维上的分布。如果剩余的维只有两个，则是切片；如果有三个，则是切块。</p>
+
+<p>旋转是变换维的方向，即在表格中重新安排维的放置（例如行列互换）。</p>
+
+<p>OLAP有多种实现方法，根据存储数据的方式不同可以分为ROLAP、MOLAP、HOLAP。</p>
+
+<p>ROLAP表示基于关系数据库的OLAP实现（Relational OLAP）。以关系数据库为核心,以关系型结构进行多维数据的表示和存储。ROLAP将多维数据库的多维结构划分为两类表:一类是事实表,用来存储数据和维关键字;另一类是维表,即对每个维至少使用一个表来存放维的层次、成员类别等维的描述信息。维表和事实表通过主关键字和外关键字联系在一起,形成了&rdquo;星型模式&rdquo;。对于层次复杂的维,为避免冗余数据占用过大的存储空间,可以使用多个表来描述,这种星型模式的扩展称为&rdquo;雪花模式&rdquo;。</p>
+
+<p>MOLAP表示基于多维数据组织的OLAP实现（Multidimensional OLAP）。以多维数据组织方式为核心,也就是说,MOLAP使用多维数组存储数据。多维数据在存储中将形成&rdquo;立方块（Cube）&rdquo;的结构,在MOLAP中对&rdquo;立方块&rdquo;的&rdquo;旋转&rdquo;、&rdquo;切块&rdquo;、&rdquo;切片&rdquo;是产生多维数据报表的主要技术。</p>
+
+<p>HOLAP表示基于混合数据组织的OLAP实现（Hybrid OLAP）。如低层是关系型的，高层是多维矩阵型的。这种方式具有更好的灵活性。</p>
+
+<p>还有其他的一些实现OLAP的方法，如提供一个专用的SQL Server，对某些存储模式（如星型、雪片型）提供对SQL查询的特殊支持。</p>
+
+<p>OLAP工具是针对特定问题的联机数据访问与分析。它通过多维的方式对数据进行分析、查询和报表。维是人们观察数据的特定角度。例如，一个企业在考虑产品的销售情况时，通常从时间、地区和产品的不同角度来深入观察产品的销售情况。这里的时间、地区和产品就是维。而这些维的不同组合和所考察的度量指标构成的多维数组则是OLAP分析的基础，可形式化表示为（维1，维2，……，维n，度量指标），如（地区、时间、产品、销售额）。多维分析是指对以多维形式组织起来的数据采取切片（Slice）、切块（Dice）、钻取（Drill-down和Roll-up）、旋转（Pivot）等各种分析动作，以求剖析数据，使用户能从多个角度、多侧面地观察数据库中的数据，从而深入理解包含在数据中的信息。</p>
+
+<p>根据综合性数据的组织方式的不同，常见的OLAP主要有基于多维数据库的MOLAP及基于关系数据库的ROLAP两种。MOLAP是以多维的方式组织和存储数据，ROLAP则利用现有的关系数据库技术来模拟多维数据。在数据仓库应用中，OLAP应用一般是数据仓库应用的前端工具，同时OLAP工具还可以同数据挖掘工具、统计分析工具配合使用，增强决策分析功能。</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>OLTP</strong></th>
+<th><strong>OLAP</strong></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><strong>用户</strong></td>
+<td>操作人员,低层管理人员</td>
+<td>决策人员,高级管理人员</td>
+</tr>
+
+<tr>
+<td><strong>功能</strong></td>
+<td>日常操作处理</td>
+<td>分析决策</td>
+</tr>
+
+<tr>
+<td><strong>DB 设计</strong></td>
+<td>面向应用</td>
+<td>面向主题</td>
+</tr>
+
+<tr>
+<td><strong>数据</strong></td>
+<td>当前的, 最新的细节的, 二维的分立的</td>
+<td>历史的, 聚集的, 多维的集成的, 统一的</td>
+</tr>
+
+<tr>
+<td><strong>存取</strong></td>
+<td>读/写数十条记录</td>
+<td>读上百万条记录</td>
+</tr>
+
+<tr>
+<td><strong>工作单位</strong></td>
+<td>简单的事务</td>
+<td>复杂的查询</td>
+</tr>
+
+<tr>
+<td><strong>用户数</strong></td>
+<td>上千个</td>
+<td>上百万个</td>
+</tr>
+
+<tr>
+<td><strong>DB 大小</strong></td>
+<td>100MB-GB</td>
+<td>100GB-TB</td>
+</tr>
+
+<tr>
+<td><strong>时间要求</strong></td>
+<td>具有实时性</td>
+<td>对时间的要求不严格</td>
+</tr>
+
+<tr>
+<td><strong>主要应用</strong></td>
+<td>数据库</td>
+<td>数据仓库</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+		</item>
+		
+		<item>
+			<title>MySql事务</title>
+			<link>https://zymagic.top/posts/mysql%E4%BA%8B%E5%8A%A1/</link>
+			<pubDate>Wed, 13 Feb 2019 15:00:01 +0800</pubDate>
+			
+			<guid>https://zymagic.top/posts/mysql%E4%BA%8B%E5%8A%A1/</guid>
+			<description>事务的四个属性 ​ 事务是必须满足4个条件（ACID）：原子性（Atomicity，或称不可分割性）、一致性（Consistency）、隔离性（</description>
+			<content type="html"><![CDATA[<p><strong>事务的四个属性</strong></p>
+
+<p>​   事务是必须满足4个条件（ACID）：原子性（<strong>A</strong>tomicity，或称不可分割性）、一致性（<strong>C</strong>onsistency）、隔离性（<strong>I</strong>solation，又称独立性）、持久性（<strong>D</strong>urability）</p>
+
+<ul>
+<li><strong>原子性：</strong>一个事务（transaction）中的所有操作，要么全部完成，要么全部不完成，不会结束在中间某个环节。事务在执行过程中发生错误，会被回滚（Rollback）到事务开始前的状态，就像这个事务从来没有执行过一样。</li>
+<li><strong>一致性：</strong>在事务开始之前和事务结束以后，数据库的完整性没有被破坏。这表示写入的资料必须完全符合所有的预设规则，这包含资料的精确度、串联性以及后续数据库可以自发性地完成预定的工作。</li>
+<li><strong>隔离性：</strong>数据库允许多个并发事务同时对其数据进行读写和修改的能力，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。事务隔离分为不同级别，包括读未提交（Read uncommitted）、读提交（read committed）、可重复读（repeatable read）和串行化（Serializable）。</li>
+<li><strong>持久性：</strong>事务处理结束后，对数据的修改就是永久的，即便系统故障也不会丢失。</li>
+</ul>
+
+<p><strong>并发事务带来的问题</strong></p>
+
+<ul>
+<li><strong>脏读(Drity Read)：</strong>某个事务已更新一份数据，另一个事务在此时读取了同一份数据，由于某些原因，前一个RollBack了操作，则后一个事务所读取的数据就会是不正确的。</li>
+<li><strong>不可重复读(Non-repeatable read)：</strong>在一个事务的两次查询之中数据不一致，这可能是两次查询过程中间插入了一个事务更新了原有的数据。（例如银行想查询A帐户余额，第一次查询A帐户为200元，此时A向帐户内存了100元并提交了，银行接着又进行了一次查询，此时A帐户为300元了。银行两次查询不一致，可能就会很困惑，不知道哪次查询是准的。）</li>
+<li><strong>幻读(Phantom Read)：</strong>在一个事务的两次查询中数据笔数不一致，例如有一个事务查询了几列(Row)数据，而另一个事务却在此时插入了新的几列数据，先前的事务在接下来的查询中，就会发现有几列数据是它先前所没有的。</li>
+<li><strong>更新丢失：</strong> 两个不同的事务（或者Java程序线程）在某一时刻对同一数据进行读取后，先后进行修改。导致第一次操作数据丢失。</li>
+</ul>
+
+<p><strong>事务的隔离级别</strong></p>
+
+<p>​   在数据库操作中，为了有效保证并发读取数据的正确性，提出的事务隔离级别，在标准SQL规范中，定义了4个事务隔离级别，不同的隔离级别对事务的处理不同。</p>
+
+<ul>
+<li><p><strong>读未提交（Read uncommitted）：</strong>如果一个事务已经开始写数据，则另外一个事务则不允许同时进行写操作，但允许其他事务读此行数据。（会引发脏读取、不可重复读和虚读，但避免了更新丢失。）</p>
+<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="c1">## 建表
+</span><span class="c1"></span><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="o">`</span><span class="n">account</span><span class="o">`</span> <span class="p">(</span>
+<span class="o">`</span><span class="n">name</span><span class="o">`</span> <span class="kt">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="no">NULL</span><span class="p">,</span>
+<span class="o">`</span><span class="n">money</span><span class="o">`</span> <span class="kt">decimal</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="no">NULL</span>
+<span class="p">)</span>
+<span class="c1">## 插入数据
+</span><span class="c1"></span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="nf">account</span> <span class="p">(</span><span class="n">NAME</span><span class="p">,</span> <span class="n">money</span><span class="p">)</span> <span class="k">VALUES</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="nf">account</span> <span class="p">(</span><span class="n">NAME</span><span class="p">,</span> <span class="n">money</span><span class="p">)</span> <span class="k">VALUES</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span></code></pre></div></li>
+</ul>
+
+<p>eg:</p>
+<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql">  <span class="c1">## A窗口
+</span><span class="c1"></span>  <span class="kt">SET</span> <span class="n">GLOBAL</span> <span class="n">TRANSACTION</span> <span class="n">ISOLATION</span>  <span class="n">LEVEL</span> <span class="k">READ</span> <span class="n">UNCOMMITTED</span><span class="p">;</span><span class="c1">##设置数据库隔离级别为Readuncommitted(读未提交)
+</span><span class="c1"></span>  <span class="n">start</span> <span class="n">transaction</span><span class="p">;</span><span class="c1">##开启事务
+</span><span class="c1"></span>  <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">account</span> <span class="k">where</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span><span class="p">;</span><span class="c1">##(500)查询A账户中现有的钱，转到B窗口进行操作
+</span><span class="c1"></span>  <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">account</span> <span class="k">where</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span><span class="p">;</span><span class="c1">##(600)发现a多了100元，这时候A读到了B未提交的数据（脏读）
+</span><span class="c1"></span>  <span class="c1">## B窗口
+</span><span class="c1"></span>  <span class="n">start</span> <span class="n">transaction</span><span class="p">;</span><span class="c1">##开启事务
+</span><span class="c1"></span>  <span class="k">update</span> <span class="n">account</span> <span class="kt">set</span> <span class="n">money</span><span class="o">=</span><span class="n">money</span><span class="o">+</span><span class="mi">100</span> <span class="k">where</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">;</span><span class="c1">##不要提交，转到A窗口查询</span></code></pre></div>
+<ul>
+<li><strong>读提交（Read Committed）:</strong>读取数据的事务允许其他事务继续访问该行数据，但是未提交的写事务将会禁止其他事务访问该行。</li>
+</ul>
+
+<p>eg:</p>
+<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql">  <span class="c1">## A窗口
+</span><span class="c1"></span>  <span class="kt">SET</span> <span class="n">GLOBAL</span> <span class="n">TRANSACTION</span> <span class="n">ISOLATION</span>  <span class="n">LEVEL</span> <span class="k">READ</span> <span class="n">COMMITTED</span><span class="p">;</span>
+  <span class="n">START</span> <span class="n">TRANSACTION</span><span class="p">;</span>
+  <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">account</span> <span class="k">WHERE</span> <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span><span class="p">;</span><span class="c1">##发现a帐户是500元，转到b窗口
+</span><span class="c1"></span>  <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">account</span> <span class="k">WHERE</span> <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span><span class="p">;</span><span class="c1">##b窗口提交事物后发现a帐户多了100,这  时候，a读到了别的事务提交的数据，两次读取a帐户读到的是不同的结果（不可重复读）
+</span><span class="c1"></span>
+  <span class="c1">## B窗口
+</span><span class="c1"></span>  <span class="n">START</span> <span class="n">TRANSACTION</span><span class="p">;</span>
+  <span class="k">UPDATE</span> <span class="n">account</span> <span class="kt">SET</span> <span class="n">money</span><span class="o">=</span><span class="n">money</span><span class="o">+</span><span class="mi">100</span> <span class="k">WHERE</span> <span class="n">NAME</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">;</span><span class="c1">##不提交转到窗口a查询a账户金额为500（避免了脏读）
+</span><span class="c1"></span>  <span class="n">COMMIT</span><span class="p">;</span><span class="c1">##转到a窗口</span></code></pre></div>
+<ul>
+<li><strong>可重复读取（Repeatable Read）(mysql默认级别)：</strong>读取数据的事务将会禁止写事务（但允许读事务，不管事务b是否提交事务a查询结果保持不变，基于快照读），写事务则禁止任何其他事务。</li>
+</ul>
+
+<p>eg:</p>
+<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql">  <span class="c1">## A窗口
+</span><span class="c1"></span>  <span class="kt">SET</span> <span class="n">SESSION</span>  <span class="n">TRANSACTION</span> <span class="n">ISOLATION</span>  <span class="n">LEVEL</span> <span class="n">REPEATABLE</span> <span class="k">READ</span><span class="p">;</span>
+  <span class="n">START</span> <span class="n">TRANSACTION</span><span class="p">;</span>
+  <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">account</span><span class="p">;</span><span class="c1">##发现表有2条记录，转到b窗口
+</span><span class="c1"></span>  <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">account</span><span class="p">;</span><span class="c1">##b事务提交后查询任为2条记录mysql的RR（可重复读）一并解决了幻读的问题
+</span><span class="c1"></span>  <span class="n">COMMIT</span><span class="p">;</span>
+  <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">account</span><span class="p">;</span><span class="c1">##a事务提交后查询为3条记录
+</span><span class="c1"></span>  
+  <span class="c1">## B窗口
+</span><span class="c1"></span>  <span class="n">START</span> <span class="n">TRANSACTION</span><span class="p">;</span>
+  <span class="k">INSERT</span> <span class="k">INTO</span> <span class="nf">account</span><span class="p">(</span><span class="n">NAME</span><span class="p">,</span><span class="n">money</span><span class="p">)</span> <span class="k">VALUES</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span><span class="mi">500</span><span class="p">);</span>
+  <span class="n">COMMIT</span><span class="p">;</span><span class="c1">##转到a窗口</span></code></pre></div>
+<ul>
+<li><strong>序列化（Serializable）：</strong>提供严格的事务隔离。它要求事务序列化执行，事务只能一个接着一个地执行，不能并发执行。</li>
+</ul>
+
+<p>eg:</p>
+<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql">  <span class="c1">## A窗口
+</span><span class="c1"></span>  <span class="kt">set</span> <span class="n">transaction</span> <span class="n">isolation</span> <span class="n">level</span> <span class="n">Serializable</span><span class="p">;</span>
+  <span class="n">start</span> <span class="n">transaction</span><span class="p">;</span>
+  <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">account</span><span class="p">;</span><span class="c1">##转到b窗口
+</span><span class="c1"></span>   
+  <span class="c1">## B窗口
+</span><span class="c1"></span>  <span class="n">start</span> <span class="n">transaction</span><span class="p">;</span>
+  <span class="k">insert</span> <span class="k">into</span> <span class="nf">account</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">money</span><span class="p">)</span> <span class="k">values</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span><span class="mi">500</span><span class="p">);</span><span class="c1">##发现不能插入，只能等待a结束事务才能插入
+</span><span class="c1"></span>  </code></pre></div>]]></content>
+		</item>
+		
+		<item>
+			<title>开源ETL工具Kettle编译安装</title>
+			<link>https://zymagic.top/posts/%E5%BC%80%E6%BA%90etl%E5%B7%A5%E5%85%B7kettle%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/</link>
+			<pubDate>Sat, 29 Dec 2018 15:00:01 +0800</pubDate>
+			
+			<guid>https://zymagic.top/posts/%E5%BC%80%E6%BA%90etl%E5%B7%A5%E5%85%B7kettle%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/</guid>
+			<description>​ 做数据开发一直都在用的一款开源的Etl工具Kettle,今天记录一下基于kettle的源码,编译、安装过程。 ​ kettle是用Java编写</description>
+			<content type="html"><![CDATA[
+
+<p>​   做数据开发一直都在用的一款开源的<a href="https://baike.baidu.com/item/ETL/1251949?fr=aladdin" target="_blank">Etl</a>工具Kettle,今天记录一下基于<a href="https://github.com/pentaho/pentaho-kettle" target="_blank">kettle</a>的源码,编译、安装过程。</p>
+
+<p>​   kettle是用Java编写的一款etl工具，采用了Maven管理，官方的教程是在cmd里面执行maven命令编译，秉承着对工具的热爱，我尝试着在idea里面编译（其实和命令安装是一样的）。</p>
+
+<p>​   kettle也有编译好的包，可以直接下载使用。<a href="https://sourceforge.net/projects/pentaho/files/latest/download?aliId=137249511" target="_blank">下载链接</a></p>
+
+<h3 id="编译步骤">编译步骤</h3>
+
+<h5 id="环境">环境：</h5>
+
+<ul>
+<li>Maven, version 3+</li>
+<li>Java JDK 1.8</li>
+<li>This <a href="https://raw.githubusercontent.com/pentaho/maven-parent-poms/master/maven-support-files/settings.xml" target="_blank">settings.xml</a> in your /.m2 directory</li>
+<li>IDEA</li>
+</ul>
+
+<hr />
+
+<h5 id="步骤">步骤：</h5>
+
+<ol>
+<li>从github上clone源码到idea.<a href="https://github.com/pentaho/pentaho-kettle.git" target="_blank">https://github.com/pentaho/pentaho-kettle.git</a></li>
+</ol>
+
+<p><img src="https://raw.githubusercontent.com/zy528/blog/hugo/static/images/1.png" alt="1" /></p>
+
+<p>然后就是maven漫长的下载包的环节，kettle涉及到的依赖包很多很大，真是个漫长的过程。。。</p>
+
+<p>2.在漫长的下载过程后点击下图的Terminal窗口，输入命令</p>
+
+<pre><code>mvn install -DskipTests
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/zy528/blog/hugo/static/images/2.png" alt="1546075627948" /></p>
+
+<p>如果不出问题的话最后结果,如上图所示 BUILD SUCCESS</p>
+
+<p>3.最后在 assemblies\client\target 目录下有一个zip格式的文件就是编译后的kettle</p>
+
+<p><img src="https://raw.githubusercontent.com/zy528/blog/hugo/static/images/3.png" alt="1546076111642" /></p>
+
+<p>4.解压该文件 运行Spoon.bat就可以使用kettle了 🙌</p>
+
+<h3 id="结语">结语</h3>
+
+<p>​   说实话等待kettle下载依赖的过程实在有点久，如果没有特殊的二次开发的需求的话，还是建议直接下载官方编译好的包。</p>
+
+<p>​   不过源码编译还是有一点好就是最新的kettle，我编译出来的是kettle9.0的版本，我去官网下载只能下到8.0的包（功能上没有太大的区别）。这个就看自己的喜好了。</p>
+
+<p>​   如果编译的过程中出错了，最好检查下自己的maven环境。</p>
+
+<p>​   kettle的使用我想在后面文章里记录下自己使用kettle遇到的问题和一些kettle的使用技巧，kettle的编译和安装就到这里了。</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>你好，2019</title>
+			<link>https://zymagic.top/posts/%E4%BD%A0%E5%A5%BD2019/</link>
+			<pubDate>Sat, 29 Dec 2018 11:29:17 +0800</pubDate>
+			
+			<guid>https://zymagic.top/posts/%E4%BD%A0%E5%A5%BD2019/</guid>
+			<description>​ 在小伙伴的推荐下，用hugo搭建了这个blog,并挂在了github上，工作也两年多了，从一开始的Java 开发 到现在的数据开发，因为一些机</description>
+			<content type="html"><![CDATA[<p>​   在小伙伴的推荐下，用hugo搭建了这个blog,并挂在了github上，工作也两年多了，从一开始的Java 开发 到现在的数据开发，因为一些机缘巧合做了一个小小的转型，两年的工作时间在码农的这条路上，有很多收获也踩过很多坑，由于自己的懒癌，工作中的很多应该记录下来的东西，都零零散散的分布在脑海中，现在呢我还是想用这样的一个平台来记录下自己的码农生涯，以及自己想记录的一切。希望自己能从19年开始坚持下去，好好管理好自己。</p>
+
+<p>​   18年马上就要结束了，自己的本命年就这样平稳的结束了，这一年没有什么特别大的风浪，一切都平淡无奇，但是在18年末我还是做了一个重大的决定，再一次选择了自己接下来的路。所以2019对我来说可能不会再是平稳的一年，充满了未知和期待，有很多事需要我去面对和学习。我只是希望自己能和3年前自己在决定离开重庆的时候一样的无畏，保持自己的初心，一切都会好起来的。</p>
+
+<p>​   To Be A Better Man.💙🙏</p>
+
+<p>​                                                   yu</p>
+
+<p>​                                       2018-12-29,深圳</p>
+]]></content>
+		</item>
+		
+	</channel>
+</rss>

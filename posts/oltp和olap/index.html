@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta itemprop="name" content="OLTP和OLAP">
+<meta itemprop="description" content="OLTP On-Line Transaction Processing联机事务处理系统(OLTP) 也称为面向交易的处理系统，其基本特征是顾客的原始数据可以立即传送到计算中心进行处理，并">
+
+
+<meta itemprop="datePublished" content="2019-03-04T15:00:01&#43;08:00" />
+<meta itemprop="dateModified" content="2019-03-04T15:00:01&#43;08:00" />
+<meta itemprop="wordCount" content="2355">
+
+
+
+<meta itemprop="keywords" content="数据仓库," />
+<meta property="og:title" content="OLTP和OLAP" />
+<meta property="og:description" content="OLTP On-Line Transaction Processing联机事务处理系统(OLTP) 也称为面向交易的处理系统，其基本特征是顾客的原始数据可以立即传送到计算中心进行处理，并" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zymagic.top/posts/oltp%E5%92%8Colap/" />
+<meta property="article:published_time" content="2019-03-04T15:00:01+08:00" />
+<meta property="article:modified_time" content="2019-03-04T15:00:01+08:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="OLTP和OLAP"/>
+<meta name="twitter:description" content="OLTP On-Line Transaction Processing联机事务处理系统(OLTP) 也称为面向交易的处理系统，其基本特征是顾客的原始数据可以立即传送到计算中心进行处理，并"/>
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>OLTP和OLAP</title>
+	<link rel="stylesheet" href="https://zymagic.top/css/style.min.9a30741782203507f3d35fe9cefabad487c72fc82dfbdf59121759fc2fa52f92.css" integrity="sha256-mjB0F4IgNQfz01/pzvq61IfHL8gt+99ZEhdZ/C+lL5I=">
+	
+	
+	
+	
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://zymagic.top">ZY的小黑屋</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://zymagic.top/posts/">Posts</a>
+					<a href="https://zymagic.top/resume/">Resume</a>
+					<a href="https://zymagic.top/tags/">Tags</a>
+					<a href="https://zymagic.top/about-me/">About</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="mailto:yuzou528@qq.com" target="_blank" rel="noopener" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="https://github.com/zy528" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://zymagic.top/posts/">Posts</a></li>
+			<li><a href="https://zymagic.top/resume/">Resume</a></li>
+			<li><a href="https://zymagic.top/tags/">Tags</a></li>
+			<li><a href="https://zymagic.top/about-me/">About</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Mar 4, 2019</span></div>
+				<h1>OLTP和OLAP</h1>
+			</header>
+			<div class="content">
+				
+
+<h2 id="oltp">OLTP</h2>
+
+<p>On-Line Transaction Processing<a href="http://baike.baidu.com/view/8028.htm" target="_blank">联机事务处理</a>系统(OLTP)</p>
+
+<p>也称为面向交易的处理系统，其基本特征是顾客的<a href="http://baike.baidu.com/view/3364695.htm" target="_blank">原始数据</a>可以立即传送到<a href="http://baike.baidu.com/view/907824.htm" target="_blank">计算中心</a>进行处理，并在很短的时间内给出处理结果。</p>
+
+<h4 id="特征">特征</h4>
+
+<p>支持大量并发用户定期添加和修改数据。</p>
+
+<p>反映随时变化的单位状态，但不保存其历史记录。</p>
+
+<p>包含大量数据，其中包括用于验证事务的大量数据。</p>
+
+<p>具有复杂的结构。</p>
+
+<p>可以进行优化以对<a href="http://baike.baidu.com/view/121511.htm" target="_blank">事务</a>活动做出响应。</p>
+
+<p>提供用于支持单位日常运营的技术基础结构。</p>
+
+<p>个别<a href="http://baike.baidu.com/view/121511.htm" target="_blank">事务</a>能够很快地完成，并且只需访问相对较少的数据。OLTP 系统旨在处理同时输入的成百上千的<a href="http://baike.baidu.com/view/121511.htm" target="_blank">事务</a>。</p>
+
+<p>实时性要求高。</p>
+
+<p>数据量不是很大。</p>
+
+<p>交易一般是确定的，所以OLTP是对确定性的数据进行存取。(比如存取款都有一个特定的金额)</p>
+
+<p>并发性要求高并且严格的要求事务的完整、安全性。(比如这种情况：有可能你和你的家人同时在不同的银行取同一个帐号的款)。</p>
+
+<h2 id="olap">OLAP</h2>
+
+<p>联机分析处理 (OLAP) 的概念最早是由关系数据库之父E.F.Codd于1993年提出的，他同时提出了关于OLAP的12条准则。OLAP的提出引起了很大的反响，OLAP作为一类产品同联机事务处理(OLTP) 明显区分开来。</p>
+
+<p>下表列出了OLTP与OLAP之间的比较。</p>
+
+<p>OLAP是使分析人员、管理人员或执行人员能够从多角度对信息进行快速、一致、交互地存取,从而获得对数据的更深入了解的一类软件技术。OLAP的目标是满足决策支持或者满足在多维环境下特定的查询和报表需求,它的技术核心是&rdquo;维&rdquo;这个概念。</p>
+
+<p>“维”是人们观察客观世界的角度,是一种高层次的类型划分。“维”一般包含着层次关系,这种层次关系有时会相当复杂。通过把一个实体的多项重要的属性定义为多个维(dimension)，使用户能对不同维上的数据进行比较。因此OLAP也可以说是多维数据分析工具的集合。</p>
+
+<p>OLAP的基本多维分析操作有钻取（roll up和drill down）、切片（slice）和切块（dice）、以及旋转（pivot）、drill across、drill through等。</p>
+
+<p>钻取是改变维的层次，变换分析的粒度。它包括向上钻取（roll up）和向下钻取（drill down）。roll up是在某一维上将低层次的细节数据概括到高层次的汇总数据，或者减少维数；而drill down则相反，它从汇总数据深入到细节数据进行观察或增加新维。</p>
+
+<p>切片和切块是在一部分维上选定值后，关心度量数据在剩余维上的分布。如果剩余的维只有两个，则是切片；如果有三个，则是切块。</p>
+
+<p>旋转是变换维的方向，即在表格中重新安排维的放置（例如行列互换）。</p>
+
+<p>OLAP有多种实现方法，根据存储数据的方式不同可以分为ROLAP、MOLAP、HOLAP。</p>
+
+<p>ROLAP表示基于关系数据库的OLAP实现（Relational OLAP）。以关系数据库为核心,以关系型结构进行多维数据的表示和存储。ROLAP将多维数据库的多维结构划分为两类表:一类是事实表,用来存储数据和维关键字;另一类是维表,即对每个维至少使用一个表来存放维的层次、成员类别等维的描述信息。维表和事实表通过主关键字和外关键字联系在一起,形成了&rdquo;星型模式&rdquo;。对于层次复杂的维,为避免冗余数据占用过大的存储空间,可以使用多个表来描述,这种星型模式的扩展称为&rdquo;雪花模式&rdquo;。</p>
+
+<p>MOLAP表示基于多维数据组织的OLAP实现（Multidimensional OLAP）。以多维数据组织方式为核心,也就是说,MOLAP使用多维数组存储数据。多维数据在存储中将形成&rdquo;立方块（Cube）&rdquo;的结构,在MOLAP中对&rdquo;立方块&rdquo;的&rdquo;旋转&rdquo;、&rdquo;切块&rdquo;、&rdquo;切片&rdquo;是产生多维数据报表的主要技术。</p>
+
+<p>HOLAP表示基于混合数据组织的OLAP实现（Hybrid OLAP）。如低层是关系型的，高层是多维矩阵型的。这种方式具有更好的灵活性。</p>
+
+<p>还有其他的一些实现OLAP的方法，如提供一个专用的SQL Server，对某些存储模式（如星型、雪片型）提供对SQL查询的特殊支持。</p>
+
+<p>OLAP工具是针对特定问题的联机数据访问与分析。它通过多维的方式对数据进行分析、查询和报表。维是人们观察数据的特定角度。例如，一个企业在考虑产品的销售情况时，通常从时间、地区和产品的不同角度来深入观察产品的销售情况。这里的时间、地区和产品就是维。而这些维的不同组合和所考察的度量指标构成的多维数组则是OLAP分析的基础，可形式化表示为（维1，维2，……，维n，度量指标），如（地区、时间、产品、销售额）。多维分析是指对以多维形式组织起来的数据采取切片（Slice）、切块（Dice）、钻取（Drill-down和Roll-up）、旋转（Pivot）等各种分析动作，以求剖析数据，使用户能从多个角度、多侧面地观察数据库中的数据，从而深入理解包含在数据中的信息。</p>
+
+<p>根据综合性数据的组织方式的不同，常见的OLAP主要有基于多维数据库的MOLAP及基于关系数据库的ROLAP两种。MOLAP是以多维的方式组织和存储数据，ROLAP则利用现有的关系数据库技术来模拟多维数据。在数据仓库应用中，OLAP应用一般是数据仓库应用的前端工具，同时OLAP工具还可以同数据挖掘工具、统计分析工具配合使用，增强决策分析功能。</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>OLTP</strong></th>
+<th><strong>OLAP</strong></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><strong>用户</strong></td>
+<td>操作人员,低层管理人员</td>
+<td>决策人员,高级管理人员</td>
+</tr>
+
+<tr>
+<td><strong>功能</strong></td>
+<td>日常操作处理</td>
+<td>分析决策</td>
+</tr>
+
+<tr>
+<td><strong>DB 设计</strong></td>
+<td>面向应用</td>
+<td>面向主题</td>
+</tr>
+
+<tr>
+<td><strong>数据</strong></td>
+<td>当前的, 最新的细节的, 二维的分立的</td>
+<td>历史的, 聚集的, 多维的集成的, 统一的</td>
+</tr>
+
+<tr>
+<td><strong>存取</strong></td>
+<td>读/写数十条记录</td>
+<td>读上百万条记录</td>
+</tr>
+
+<tr>
+<td><strong>工作单位</strong></td>
+<td>简单的事务</td>
+<td>复杂的查询</td>
+</tr>
+
+<tr>
+<td><strong>用户数</strong></td>
+<td>上千个</td>
+<td>上百万个</td>
+</tr>
+
+<tr>
+<td><strong>DB 大小</strong></td>
+<td>100MB-GB</td>
+<td>100GB-TB</td>
+</tr>
+
+<tr>
+<td><strong>时间要求</strong></td>
+<td>具有实时性</td>
+<td>对时间的要求不严格</td>
+</tr>
+
+<tr>
+<td><strong>主要应用</strong></td>
+<td>数据库</td>
+<td>数据仓库</td>
+</tr>
+</tbody>
+</table>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://zymagic.top/tags/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93">数据仓库</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2355 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-03-04 07:00 &#43;0000</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://zymagic.top/posts/oraclepostgresql%E5%A4%9A%E8%A1%A8%E5%85%B3%E8%81%94%E6%9B%B4%E6%96%B0/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Oracle、PostGreSql多表关联更新</span>
+			</a>
+			<a class="prev-post" href="https://zymagic.top/posts/mysql%E4%BA%8B%E5%8A%A1/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>MySql事务</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="https://zymagic.top">ZY</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+        <span id="busuanzi_container_site_pv">
+            site pv:<span id="busuanzi_value_site_pv"></span>
+        </span>
+        |
+        <span id="busuanzi_container_site_uv">
+            uv:<span id="busuanzi_value_site_uv"></span>
+        </span>
+        </p>
+		<p>Made With <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> | Theme - <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a>
+	</footer>
+
+
+	<script src="https://zymagic.top/js/main.min.8f39f24808e9d0a9b02da58c2d2838da859dc0b7bdfadbdb1883aae8b6adacfe.js" integrity="sha256-jznySAjp0KmwLaWMLSg42oWdwLe9+tvbGIOq6LatrP4="></script>
+
+</body>
+
+</html>

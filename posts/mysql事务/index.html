@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta itemprop="name" content="MySql事务">
+<meta itemprop="description" content="事务的四个属性 ​ 事务是必须满足4个条件（ACID）：原子性（Atomicity，或称不可分割性）、一致性（Consistency）、隔离性（">
+
+
+<meta itemprop="datePublished" content="2019-02-13T15:00:01&#43;08:00" />
+<meta itemprop="dateModified" content="2019-02-13T15:00:01&#43;08:00" />
+<meta itemprop="wordCount" content="2018">
+
+
+
+<meta itemprop="keywords" content="MySql," />
+<meta property="og:title" content="MySql事务" />
+<meta property="og:description" content="事务的四个属性 ​ 事务是必须满足4个条件（ACID）：原子性（Atomicity，或称不可分割性）、一致性（Consistency）、隔离性（" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zymagic.top/posts/mysql%E4%BA%8B%E5%8A%A1/" />
+<meta property="article:published_time" content="2019-02-13T15:00:01+08:00" />
+<meta property="article:modified_time" content="2019-02-13T15:00:01+08:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MySql事务"/>
+<meta name="twitter:description" content="事务的四个属性 ​ 事务是必须满足4个条件（ACID）：原子性（Atomicity，或称不可分割性）、一致性（Consistency）、隔离性（"/>
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>MySql事务</title>
+	<link rel="stylesheet" href="https://zymagic.top/css/style.min.9a30741782203507f3d35fe9cefabad487c72fc82dfbdf59121759fc2fa52f92.css" integrity="sha256-mjB0F4IgNQfz01/pzvq61IfHL8gt+99ZEhdZ/C+lL5I=">
+	
+	
+	
+	
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://zymagic.top">ZY的小黑屋</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://zymagic.top/posts/">Posts</a>
+					<a href="https://zymagic.top/resume/">Resume</a>
+					<a href="https://zymagic.top/tags/">Tags</a>
+					<a href="https://zymagic.top/about-me/">About</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="mailto:yuzou528@qq.com" target="_blank" rel="noopener" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="https://github.com/zy528" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://zymagic.top/posts/">Posts</a></li>
+			<li><a href="https://zymagic.top/resume/">Resume</a></li>
+			<li><a href="https://zymagic.top/tags/">Tags</a></li>
+			<li><a href="https://zymagic.top/about-me/">About</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Feb 13, 2019</span></div>
+				<h1>MySql事务</h1>
+			</header>
+			<div class="content">
+				<p><strong>事务的四个属性</strong></p>
+
+<p>​   事务是必须满足4个条件（ACID）：原子性（<strong>A</strong>tomicity，或称不可分割性）、一致性（<strong>C</strong>onsistency）、隔离性（<strong>I</strong>solation，又称独立性）、持久性（<strong>D</strong>urability）</p>
+
+<ul>
+<li><strong>原子性：</strong>一个事务（transaction）中的所有操作，要么全部完成，要么全部不完成，不会结束在中间某个环节。事务在执行过程中发生错误，会被回滚（Rollback）到事务开始前的状态，就像这个事务从来没有执行过一样。</li>
+<li><strong>一致性：</strong>在事务开始之前和事务结束以后，数据库的完整性没有被破坏。这表示写入的资料必须完全符合所有的预设规则，这包含资料的精确度、串联性以及后续数据库可以自发性地完成预定的工作。</li>
+<li><strong>隔离性：</strong>数据库允许多个并发事务同时对其数据进行读写和修改的能力，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。事务隔离分为不同级别，包括读未提交（Read uncommitted）、读提交（read committed）、可重复读（repeatable read）和串行化（Serializable）。</li>
+<li><strong>持久性：</strong>事务处理结束后，对数据的修改就是永久的，即便系统故障也不会丢失。</li>
+</ul>
+
+<p><strong>并发事务带来的问题</strong></p>
+
+<ul>
+<li><strong>脏读(Drity Read)：</strong>某个事务已更新一份数据，另一个事务在此时读取了同一份数据，由于某些原因，前一个RollBack了操作，则后一个事务所读取的数据就会是不正确的。</li>
+<li><strong>不可重复读(Non-repeatable read)：</strong>在一个事务的两次查询之中数据不一致，这可能是两次查询过程中间插入了一个事务更新了原有的数据。（例如银行想查询A帐户余额，第一次查询A帐户为200元，此时A向帐户内存了100元并提交了，银行接着又进行了一次查询，此时A帐户为300元了。银行两次查询不一致，可能就会很困惑，不知道哪次查询是准的。）</li>
+<li><strong>幻读(Phantom Read)：</strong>在一个事务的两次查询中数据笔数不一致，例如有一个事务查询了几列(Row)数据，而另一个事务却在此时插入了新的几列数据，先前的事务在接下来的查询中，就会发现有几列数据是它先前所没有的。</li>
+<li><strong>更新丢失：</strong> 两个不同的事务（或者Java程序线程）在某一时刻对同一数据进行读取后，先后进行修改。导致第一次操作数据丢失。</li>
+</ul>
+
+<p><strong>事务的隔离级别</strong></p>
+
+<p>​   在数据库操作中，为了有效保证并发读取数据的正确性，提出的事务隔离级别，在标准SQL规范中，定义了4个事务隔离级别，不同的隔离级别对事务的处理不同。</p>
+
+<ul>
+<li><p><strong>读未提交（Read uncommitted）：</strong>如果一个事务已经开始写数据，则另外一个事务则不允许同时进行写操作，但允许其他事务读此行数据。（会引发脏读取、不可重复读和虚读，但避免了更新丢失。）</p>
+<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="c1">## 建表
+</span><span class="c1"></span><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="o">`</span><span class="n">account</span><span class="o">`</span> <span class="p">(</span>
+<span class="o">`</span><span class="n">name</span><span class="o">`</span> <span class="kt">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="no">NULL</span><span class="p">,</span>
+<span class="o">`</span><span class="n">money</span><span class="o">`</span> <span class="kt">decimal</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="no">NULL</span>
+<span class="p">)</span>
+<span class="c1">## 插入数据
+</span><span class="c1"></span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="nf">account</span> <span class="p">(</span><span class="n">NAME</span><span class="p">,</span> <span class="n">money</span><span class="p">)</span> <span class="k">VALUES</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="nf">account</span> <span class="p">(</span><span class="n">NAME</span><span class="p">,</span> <span class="n">money</span><span class="p">)</span> <span class="k">VALUES</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span></code></pre></div></li>
+</ul>
+
+<p>eg:</p>
+<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql">  <span class="c1">## A窗口
+</span><span class="c1"></span>  <span class="kt">SET</span> <span class="n">GLOBAL</span> <span class="n">TRANSACTION</span> <span class="n">ISOLATION</span>  <span class="n">LEVEL</span> <span class="k">READ</span> <span class="n">UNCOMMITTED</span><span class="p">;</span><span class="c1">##设置数据库隔离级别为Readuncommitted(读未提交)
+</span><span class="c1"></span>  <span class="n">start</span> <span class="n">transaction</span><span class="p">;</span><span class="c1">##开启事务
+</span><span class="c1"></span>  <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">account</span> <span class="k">where</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span><span class="p">;</span><span class="c1">##(500)查询A账户中现有的钱，转到B窗口进行操作
+</span><span class="c1"></span>  <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">account</span> <span class="k">where</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span><span class="p">;</span><span class="c1">##(600)发现a多了100元，这时候A读到了B未提交的数据（脏读）
+</span><span class="c1"></span>  <span class="c1">## B窗口
+</span><span class="c1"></span>  <span class="n">start</span> <span class="n">transaction</span><span class="p">;</span><span class="c1">##开启事务
+</span><span class="c1"></span>  <span class="k">update</span> <span class="n">account</span> <span class="kt">set</span> <span class="n">money</span><span class="o">=</span><span class="n">money</span><span class="o">+</span><span class="mi">100</span> <span class="k">where</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">;</span><span class="c1">##不要提交，转到A窗口查询</span></code></pre></div>
+<ul>
+<li><strong>读提交（Read Committed）:</strong>读取数据的事务允许其他事务继续访问该行数据，但是未提交的写事务将会禁止其他事务访问该行。</li>
+</ul>
+
+<p>eg:</p>
+<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql">  <span class="c1">## A窗口
+</span><span class="c1"></span>  <span class="kt">SET</span> <span class="n">GLOBAL</span> <span class="n">TRANSACTION</span> <span class="n">ISOLATION</span>  <span class="n">LEVEL</span> <span class="k">READ</span> <span class="n">COMMITTED</span><span class="p">;</span>
+  <span class="n">START</span> <span class="n">TRANSACTION</span><span class="p">;</span>
+  <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">account</span> <span class="k">WHERE</span> <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span><span class="p">;</span><span class="c1">##发现a帐户是500元，转到b窗口
+</span><span class="c1"></span>  <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">account</span> <span class="k">WHERE</span> <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span><span class="p">;</span><span class="c1">##b窗口提交事物后发现a帐户多了100,这  时候，a读到了别的事务提交的数据，两次读取a帐户读到的是不同的结果（不可重复读）
+</span><span class="c1"></span>
+  <span class="c1">## B窗口
+</span><span class="c1"></span>  <span class="n">START</span> <span class="n">TRANSACTION</span><span class="p">;</span>
+  <span class="k">UPDATE</span> <span class="n">account</span> <span class="kt">SET</span> <span class="n">money</span><span class="o">=</span><span class="n">money</span><span class="o">+</span><span class="mi">100</span> <span class="k">WHERE</span> <span class="n">NAME</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">;</span><span class="c1">##不提交转到窗口a查询a账户金额为500（避免了脏读）
+</span><span class="c1"></span>  <span class="n">COMMIT</span><span class="p">;</span><span class="c1">##转到a窗口</span></code></pre></div>
+<ul>
+<li><strong>可重复读取（Repeatable Read）(mysql默认级别)：</strong>读取数据的事务将会禁止写事务（但允许读事务，不管事务b是否提交事务a查询结果保持不变，基于快照读），写事务则禁止任何其他事务。</li>
+</ul>
+
+<p>eg:</p>
+<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql">  <span class="c1">## A窗口
+</span><span class="c1"></span>  <span class="kt">SET</span> <span class="n">SESSION</span>  <span class="n">TRANSACTION</span> <span class="n">ISOLATION</span>  <span class="n">LEVEL</span> <span class="n">REPEATABLE</span> <span class="k">READ</span><span class="p">;</span>
+  <span class="n">START</span> <span class="n">TRANSACTION</span><span class="p">;</span>
+  <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">account</span><span class="p">;</span><span class="c1">##发现表有2条记录，转到b窗口
+</span><span class="c1"></span>  <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">account</span><span class="p">;</span><span class="c1">##b事务提交后查询任为2条记录mysql的RR（可重复读）一并解决了幻读的问题
+</span><span class="c1"></span>  <span class="n">COMMIT</span><span class="p">;</span>
+  <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">account</span><span class="p">;</span><span class="c1">##a事务提交后查询为3条记录
+</span><span class="c1"></span>  
+  <span class="c1">## B窗口
+</span><span class="c1"></span>  <span class="n">START</span> <span class="n">TRANSACTION</span><span class="p">;</span>
+  <span class="k">INSERT</span> <span class="k">INTO</span> <span class="nf">account</span><span class="p">(</span><span class="n">NAME</span><span class="p">,</span><span class="n">money</span><span class="p">)</span> <span class="k">VALUES</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span><span class="mi">500</span><span class="p">);</span>
+  <span class="n">COMMIT</span><span class="p">;</span><span class="c1">##转到a窗口</span></code></pre></div>
+<ul>
+<li><strong>序列化（Serializable）：</strong>提供严格的事务隔离。它要求事务序列化执行，事务只能一个接着一个地执行，不能并发执行。</li>
+</ul>
+
+<p>eg:</p>
+<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql">  <span class="c1">## A窗口
+</span><span class="c1"></span>  <span class="kt">set</span> <span class="n">transaction</span> <span class="n">isolation</span> <span class="n">level</span> <span class="n">Serializable</span><span class="p">;</span>
+  <span class="n">start</span> <span class="n">transaction</span><span class="p">;</span>
+  <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">account</span><span class="p">;</span><span class="c1">##转到b窗口
+</span><span class="c1"></span>   
+  <span class="c1">## B窗口
+</span><span class="c1"></span>  <span class="n">start</span> <span class="n">transaction</span><span class="p">;</span>
+  <span class="k">insert</span> <span class="k">into</span> <span class="nf">account</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">money</span><span class="p">)</span> <span class="k">values</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span><span class="mi">500</span><span class="p">);</span><span class="c1">##发现不能插入，只能等待a结束事务才能插入
+</span><span class="c1"></span>  </code></pre></div>
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://zymagic.top/tags/mysql">MySql</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2018 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-02-13 07:00 &#43;0000</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://zymagic.top/posts/oltp%E5%92%8Colap/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>OLTP和OLAP</span>
+			</a>
+			<a class="prev-post" href="https://zymagic.top/posts/%E5%BC%80%E6%BA%90etl%E5%B7%A5%E5%85%B7kettle%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>开源ETL工具Kettle编译安装</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="https://zymagic.top">ZY</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+        <span id="busuanzi_container_site_pv">
+            site pv:<span id="busuanzi_value_site_pv"></span>
+        </span>
+        |
+        <span id="busuanzi_container_site_uv">
+            uv:<span id="busuanzi_value_site_uv"></span>
+        </span>
+        </p>
+		<p>Made With <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> | Theme - <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a>
+	</footer>
+
+
+	<script src="https://zymagic.top/js/main.min.8f39f24808e9d0a9b02da58c2d2838da859dc0b7bdfadbdb1883aae8b6adacfe.js" integrity="sha256-jznySAjp0KmwLaWMLSg42oWdwLe9+tvbGIOq6LatrP4="></script>
+
+</body>
+
+</html>

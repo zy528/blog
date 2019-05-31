@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kettle on ZY的小黑屋</title>
+    <link>https://zymagic.top/tags/kettle/</link>
+    <description>Recent content in Kettle on ZY的小黑屋</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Thu, 30 May 2019 17:46:01 +0800</lastBuildDate>
+    
+	<atom:link href="https://zymagic.top/tags/kettle/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Kettle源码调试</title>
+      <link>https://zymagic.top/posts/kettle%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95/</link>
+      <pubDate>Thu, 30 May 2019 17:46:01 +0800</pubDate>
+      
+      <guid>https://zymagic.top/posts/kettle%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95/</guid>
+      <description>Kettle源码调试 继上次基于kettle源码编译Kettle之后,因为要开发kettle插件,所以尝试了下kettle源码的调试。 调试步骤</description>
+    </item>
+    
+    <item>
+      <title>开源ETL工具Kettle编译安装</title>
+      <link>https://zymagic.top/posts/%E5%BC%80%E6%BA%90etl%E5%B7%A5%E5%85%B7kettle%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/</link>
+      <pubDate>Sat, 29 Dec 2018 15:00:01 +0800</pubDate>
+      
+      <guid>https://zymagic.top/posts/%E5%BC%80%E6%BA%90etl%E5%B7%A5%E5%85%B7kettle%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/</guid>
+      <description>​ 做数据开发一直都在用的一款开源的Etl工具Kettle,今天记录一下基于kettle的源码,编译、安装过程。 ​ kettle是用Java编写</description>
+    </item>
+    
+  </channel>
+</rss>
